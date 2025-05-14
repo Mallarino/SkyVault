@@ -20,8 +20,9 @@ export default function UserScreen() {
           <Text style={styles.secondaryButtonText}>Cerrar Sesión</Text>
         </TouchableOpacity>
 
+        <BottomTabs />
       </View>
-      <BottomTabs />
+
     </>
   )
 }

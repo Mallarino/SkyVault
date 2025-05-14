@@ -22,7 +22,9 @@ export default function RegistrationScreen() {
         />
 
       </View>
-      <BottomTabs />
+      <View style={styles.bottomBar}>
+        <BottomTabs />
+      </View>
     </>
   )
 }
@@ -35,6 +37,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     paddingHorizontal: 20,
+  },
+  bottomBar: {
+    alignItems: 'center'
   },
   title: {
     color: colors.primary,

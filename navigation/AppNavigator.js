@@ -9,7 +9,6 @@ import GalleryScreen from '../screens/GalleryScreen';
 import UserScreen from '../screens/UserScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
 
-import CardModal from '../components/CardModal';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +18,7 @@ export default function AppNavigator() {
             <Stack.Navigator
                 initialRouteName='Welcome'
                 screenOptions={{
+                    navigationBarColor: '#11131A',
                     contentStyle:{
                         backgroundColor: '#11131A'
                     },
