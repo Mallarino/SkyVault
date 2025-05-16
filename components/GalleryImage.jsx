@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     },
 
     text: {
-        color: colors.text
+        color: "#97979b"
     },
 
     image: {

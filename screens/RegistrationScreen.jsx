@@ -5,6 +5,9 @@ import { useState } from 'react';
 import BottomTabs from '../components/BottomTabs';
 
 export default function RegistrationScreen() {
+
+  const [value, setValue] = useState('');
+
   return (
     <>
       <BackButton isLogued={true} />
@@ -19,6 +22,8 @@ export default function RegistrationScreen() {
           autoCapitalize='characters'
           autoCorrect={false}
           style={styles.input}
+          value={value}
+          onChangeText={(text) => setValue(text.toUpperCase())}
         />
 
       </View>

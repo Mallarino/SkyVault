@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     subtitle: {
         color: 'gray',
         textAlign: 'center',
-        fontFamily: 'serif',
+        fontFamily: '',
         fontSize: 12,
         marginBottom: 40,
         maxWidth: 300,

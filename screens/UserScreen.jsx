@@ -4,13 +4,14 @@ import colors from '../assets/const/colors';
 import { useState } from 'react';
 import BottomTabs from '../components/BottomTabs';
 import { useNavigation } from '@react-navigation/native';
+import CardModal from '../components/modals/CardModal';
 
 export default function UserScreen() {
 
   const navigation = useNavigation();
 
   return (
-    <>
+    <View style={styles.container}>
       <BackButton isLogued={true} />
       <View style={styles.container}>
 
@@ -23,7 +24,7 @@ export default function UserScreen() {
         <BottomTabs />
       </View>
 
-    </>
+    </View>
   )
 }
 

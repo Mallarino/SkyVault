@@ -9,6 +9,8 @@ import GalleryScreen from '../screens/GalleryScreen';
 import UserScreen from '../screens/UserScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
 
+import CardModal from '../components/modals/CardModal';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +34,7 @@ export default function AppNavigator() {
                 <Stack.Screen name="Gallery" component={GalleryScreen} />
                 <Stack.Screen name="User" component={UserScreen} />
                 <Stack.Screen name="Registration" component={RegistrationScreen} />
+                <Stack.Screen name="CardModal" component={CardModal} />
             </Stack.Navigator>
         </NavigationContainer>
     );
