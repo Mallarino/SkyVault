@@ -1,15 +1,46 @@
-import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 const VideoGrapherImg = require("../assets/images/videographer.png")
 import colors from '../assets/const/colors';
 import BackButton from '../components/BackButton';
 import { useNavigation } from '@react-navigation/native';
 
+
+import appFirebase from '../credentials'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { useState } from 'react';
+import { showErrorToast, showInfoToast, showSuccessToast } from '../utils/toast';
+
+const auth = getAuth(appFirebase)
+
+
 export default function LoginScreen() {
+
     const navigation = useNavigation();
 
-    const handleLogin = () => {
-        navigation.replace('Gallery'); // reemplaza para que no pueda volver atrás con "back"
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleLogin = async () => {
+        if (!email || !password) {
+            showErrorToast('Error', 'Ambos campos son requeridos !')
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            showSuccessToast('Sesión iniciada','Bienvenido de nuevo ✈️!')
+            navigation.navigate('Gallery');
+        } catch (error) {
+            console.error(error);
+            showErrorToast('Ups!', 'Correo o contraseña incorrectos.')
+        } finally {
+            setLoading(false);
+        }
     };
+
     return (
         <>
             <BackButton />
@@ -23,18 +54,25 @@ export default function LoginScreen() {
                         keyboardType="email-address"
                         placeholderTextColor={"gray"}
                         style={{ borderWidth: 1, borderColor: '#969191', padding: 10, color: 'gray', borderRadius: 8 }}
+                        onChangeText={(text) => setEmail(text)}
                     />
                     <TextInput
                         placeholder="Contraseña"
                         secureTextEntry={true}
                         placeholderTextColor={"gray"}
                         style={{ borderWidth: 1, borderColor: '#969191', padding: 10, color: 'gray', borderRadius: 8 }}
+                        onChangeText={(text) => setPassword(text)}
                     />
                 </View>
 
-                <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                    <Text style={styles.loginButtonText}>Iniciar Sesión</Text>
-                </TouchableOpacity>
+
+                {loading ? (
+                    <ActivityIndicator color="#fff" style={{ marginTop: 10}} />
+                ) : (
+                    <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+                        <Text style={styles.loginButtonText}>Iniciar Sesión</Text>
+                    </TouchableOpacity>
+                )}
 
             </View>
         </>

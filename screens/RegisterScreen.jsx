@@ -2,9 +2,15 @@ import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from 'reac
 const PhotoGrapherImg = require("../assets/images/photographer.png")
 import colors from '../assets/const/colors';
 import BackButton from '../components/BackButton';
+import { useNavigation } from "@react-navigation/native";
+
 
 
 export default function RegisterScreen() {
+
+     const navigation = useNavigation();
+     
+
     return (
         <>
             <BackButton />

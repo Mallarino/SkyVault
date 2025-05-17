@@ -4,6 +4,8 @@ import AppNavigator from './navigation/AppNavigator';
 import colors from './assets/const/colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabProvider } from './context/TabContext';
+import Toast from 'react-native-toast-message';
+
 
 export default function App() {
   return (
@@ -11,6 +13,7 @@ export default function App() {
       <TabProvider>
         <AppNavigator />
       </TabProvider>
+      <Toast />
     </SafeAreaView>
   );
 }
