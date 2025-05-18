@@ -5,12 +5,11 @@ import BackButton from '../components/BackButton';
 import { useNavigation } from '@react-navigation/native';
 
 
-import appFirebase from '../credentials'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from "../credentials"
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
-import { showErrorToast, showInfoToast, showSuccessToast } from '../utils/toast';
+import { showErrorToast, showSuccessToast } from '../utils/toast';
 
-const auth = getAuth(appFirebase)
 
 
 export default function LoginScreen() {
@@ -31,7 +30,7 @@ export default function LoginScreen() {
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            showSuccessToast('Sesión iniciada','Bienvenido de nuevo ✈️!')
+            showSuccessToast('Sesión iniciada','Bienvenido de nuevo 🛬')
             navigation.navigate('Gallery');
         } catch (error) {
             console.error(error);

@@ -2,6 +2,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import AuthLoading from '../screens/auth/AuthLoading';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
@@ -18,7 +19,7 @@ export default function AppNavigator() {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName='Welcome'
+                initialRouteName='AuthLoading'
                 screenOptions={{
                     navigationBarColor: '#11131A',
                     contentStyle:{
@@ -28,6 +29,7 @@ export default function AppNavigator() {
                     animation: 'fade'
                 }}
             >
+                <Stack.Screen name="AuthLoading" component={AuthLoading} />
                 <Stack.Screen name="Welcome" component={WelcomeScreen} />
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="Register" component={RegisterScreen} />

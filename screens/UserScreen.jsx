@@ -4,27 +4,47 @@ import colors from '../assets/const/colors';
 import { useState } from 'react';
 import BottomTabs from '../components/BottomTabs';
 import { useNavigation } from '@react-navigation/native';
-import CardModal from '../components/modals/CardModal';
+
+import { signOut } from 'firebase/auth'
+import { auth } from '../credentials';
+import { showErrorToast, showSuccessToast } from '../utils/toast';
 
 export default function UserScreen() {
 
   const navigation = useNavigation();
 
+  const handleLogout = async() => {
+    try {
+      await signOut(auth);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Welcome' }], // Reinicia navegación para evitar volver atrás con el botón
+      });
+      showSuccessToast("Sesión cerrada", "Nos vemos 🛫")
+    } catch (error) {
+      showErrorToast("Error al cerrar sesión", "intentalo mas tarde")
+      console.error("Error al cerrar sesión:", error);
+    }
+  }
+
   return (
-    <View style={styles.container}>
+    <>
       <BackButton isLogued={true} />
       <View style={styles.container}>
 
-        <Text style={styles.title}>Mallarino</Text>
+        <View style={styles.container}>
 
-        <TouchableOpacity style={styles.secondaryButton} onPress={() => navigation.navigate("Welcome")}>
-          <Text style={styles.secondaryButtonText}>Cerrar Sesión</Text>
-        </TouchableOpacity>
+          <Text style={styles.title}>Mallarino</Text>
 
-        <BottomTabs />
+          <TouchableOpacity style={styles.secondaryButton} onPress={handleLogout}>
+            <Text style={styles.secondaryButtonText}>Cerrar Sesión</Text>
+          </TouchableOpacity>
+
+          <BottomTabs />
+        </View>
+
       </View>
-
-    </View>
+    </>
   )
 }
 
