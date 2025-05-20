@@ -6,15 +6,17 @@ export default function TextInputs({ value, onChange }) {
     return (
         <>
             <View style={styles.inputGroup}>
-                <Text>Modelo:</Text>
+                <Text style={styles.textColor}>Modelo:</Text>
                 <TextInput
                     placeholderTextColor={"gray"}
                     style={styles.input}
+                    value={value.modelo}
+                    onChangeText={(text) => onChange({ ...value, modelo: text })}
                 />
             </View>
 
             <View style={styles.inputGroup}>
-                <Text>Matricula:</Text>
+                <Text style={styles.textColor}>Matricula:</Text>
                 <TextInput
                     placeholderTextColor={"gray"}
                     autoCapitalize='characters'
@@ -27,7 +29,7 @@ export default function TextInputs({ value, onChange }) {
             </View>
 
 
-            <Text style={{ marginRight: 180 }}>Descripcion:</Text>
+            <Text style={{ marginRight: 180, marginBottom: 10, color: 'gray' }}>Descripcion:</Text>
             <TextInput
                 placeholderTextColor={"gray"}
                 scrollEnabled={true}
@@ -56,6 +58,9 @@ const styles = StyleSheet.create({
         marginTop: 10,
         fontSize: 13,
         height: 36,
+    },
+    textColor : {
+        color: 'gray'
     }
 
 });

@@ -2,15 +2,13 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import AuthLoading from '../screens/auth/AuthLoading';
 import WelcomeScreen from '../screens/WelcomeScreen';
-import LoginScreen from '../screens/LoginScreen';
-import RegisterScreen from '../screens/RegisterScreen';
 import GalleryScreen from '../screens/GalleryScreen';
 import UserScreen from '../screens/UserScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
 
 import CardModal from '../components/modals/CardModal';
+import CardView from '../components/modals/CardView';
 
 
 const Stack = createNativeStackNavigator();
@@ -19,7 +17,7 @@ export default function AppNavigator() {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName='AuthLoading'
+                initialRouteName='Gallery'
                 screenOptions={{
                     navigationBarColor: '#11131A',
                     contentStyle:{
@@ -29,14 +27,13 @@ export default function AppNavigator() {
                     animation: 'fade'
                 }}
             >
-                <Stack.Screen name="AuthLoading" component={AuthLoading} />
                 <Stack.Screen name="Welcome" component={WelcomeScreen} />
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="Register" component={RegisterScreen} />
                 <Stack.Screen name="Gallery" component={GalleryScreen} />
                 <Stack.Screen name="User" component={UserScreen} />
                 <Stack.Screen name="Registration" component={RegistrationScreen} />
                 <Stack.Screen name="CardModal" component={CardModal} />
+                <Stack.Screen name="CardView" component={CardView} />
+
             </Stack.Navigator>
         </NavigationContainer>
     );

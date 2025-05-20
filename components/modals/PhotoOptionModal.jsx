@@ -1,4 +1,5 @@
 import { View, TouchableOpacity, Modal, Text, StyleSheet } from 'react-native';
+import colors from '../../assets/const/colors';
 
 
 export default function PhotoOptionModal({ visible, onClose, onCameraPress, onGalleryPress }) {
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContainer: {
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -38,7 +39,8 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     textAlign: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: colors.text,
+    color: 'white'
   },
   cancel: {
     fontSize: 18,

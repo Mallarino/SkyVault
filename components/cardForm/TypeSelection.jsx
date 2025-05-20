@@ -4,13 +4,13 @@ import RNPickerSelect from 'react-native-picker-select';
 export default function TypeSelection({ value, onChange }) {
   return (
     <>
-      <Text>Tipo:</Text>
+      <Text style={{ color: 'gray' }}>Tipo:</Text>
           <View style={{
             borderWidth: 1,
             borderColor: '#969191',
             borderRadius: 8,
             marginTop: 4,
-            width: 180,
+            width: 230,
           }}>
             <RNPickerSelect
               placeholder={{
@@ -30,6 +30,7 @@ export default function TypeSelection({ value, onChange }) {
                 inputAndroid: {
                   color: "gray",
                   fontSize: 13,
+                  width: '100%'
                 },
                 placeholder: {
                   color: 'gray',

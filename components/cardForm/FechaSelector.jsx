@@ -18,7 +18,7 @@ export default function FechaSelector({ value, onChange }) {
 
   return (
     <View style={{ marginTop: 10 }}>
-      <Text>Fecha:</Text>
+      <Text style={{ color: 'gray' }}>Fecha:</Text>
       <Pressable
         onPress={() => setShowPicker(true)}
         style={{

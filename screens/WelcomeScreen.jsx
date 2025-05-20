@@ -5,6 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function WelcomeScreen() {
 
+    // Modificar esta vista por una onBoarding screen
+
     const navigation = useNavigation();
 
     return (
@@ -17,7 +19,7 @@ export default function WelcomeScreen() {
             </Text>
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.primaryButton} onPress={() => navigation.navigate("Login")}>
+                <TouchableOpacity style={styles.primaryButton} onPress={() => navigation.navigate("Gallery")}>
                     <Text style={styles.primaryButtonText}>Iniciar Sesión</Text>
                 </TouchableOpacity>
 

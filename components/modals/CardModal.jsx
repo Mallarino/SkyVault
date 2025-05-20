@@ -7,13 +7,19 @@ import FechaSelector from '../cardForm/FechaSelector';
 import TextInputs from '../cardForm/TextInputs';
 import TypeSelection from '../cardForm/TypeSelection';
 
+import { collection, addDoc } from "firebase/firestore";
+import * as FileSystem from "expo-file-system";
+import { showErrorToast, showSuccessToast } from '../../utils/toast';
+import { db } from '../../credentials';
+import ZoomableImage from '../ZoomableImage';
+
+
 export default function CardModal({ route }) {
 
   const navigation = useNavigation();
 
   const { imageUri } = route.params || {};
 
-  console.log(imageUri);
 
   const [selectedType, setSelectedType] = useState(null);
   const [fecha, setFecha] = useState(new Date());
@@ -23,9 +29,48 @@ export default function CardModal({ route }) {
     descripcion: ""
   });
 
+  const handleCreate = async () => {
+    if (!imageUri) {
+      Alert.alert("Error", "Debes seleccionar una imagen.");
+      return;
+    }
+
+    try {
+
+      // ✅ Guardar la imagen localmente
+      const filename = `${Date.now()}.jpg`;
+      const localUri = FileSystem.documentDirectory + filename;
+
+      await FileSystem.copyAsync({
+        from: imageUri,
+        to: localUri
+      });
+
+      await addDoc(collection(db, "cards"), {
+        modelo: inputs.modelo || "Unknow",
+        matricula: inputs.matricula || "Unknow",
+        descripcion: inputs.descripcion || "",
+        tipo: selectedType,
+        fecha: fecha.toISOString(),
+        imagenPath: localUri,
+        createdAt: new Date()
+      });
+
+      showSuccessToast("Carta creada exitosamente", "¡Otra más para la colección!");
+      navigation.navigate("Gallery");
+
+    } catch (error) {
+      console.error(error);
+      showErrorToast("Ups...", "Hubo un error al crear la carta");
+    }
+  };
+
+
+
 
   return (
     <View style={styles.container}>
+
       <Image
         source={imageUri ? { uri: imageUri } : planeImg}
         style={styles.image}
@@ -51,12 +96,7 @@ export default function CardModal({ route }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.createButton}
-          onPress={() => {
-            console.log("Fecha:", fecha);
-            console.log("Matrícula:", inputs.matricula);
-            console.log("Descripción:", inputs.descripcion);
-            console.log("Imagen:", imageUri);
-          }}
+          onPress={handleCreate}
         >
           <Text style={styles.createButtonText}>Crear</Text>
         </TouchableOpacity>
@@ -75,7 +115,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '90%',
     height: '90%',
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
   },
   gridContainer: {
     marginTop: 20,
@@ -116,7 +156,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 10,
     borderColor: '#969191',
-    backgroundColor: 'red',
+    backgroundColor: colors.background,
     width: 100,
     alignItems: 'center',
     borderWidth: 1,
@@ -129,7 +169,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 10,
     borderColor: '#969191',
-    backgroundColor: 'green',
+    backgroundColor: '#6c63ff',
     width: 100,
     alignItems: 'center',
     borderWidth: 1,
