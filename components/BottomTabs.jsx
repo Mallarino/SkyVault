@@ -43,7 +43,7 @@ export default function BottomTabs() {
         const uri = result.assets[0].uri;
         setImageUri(uri);
         console.log("Foto tomada:", uri);
-        navigation.navigate("CardModal", { imageUri: uri });
+        navigation.navigate("CardModal", { item: uri });
       }
     } catch (error) {
       console.error("Error al abrir cámara:", error);
@@ -73,7 +73,7 @@ export default function BottomTabs() {
       setImageUri(uri);
       console.log("Imagen seleccionada:", uri);
 
-      navigation.navigate("CardModal", { imageUri: uri });
+      navigation.navigate("CardModal", { uri: uri, item: null });
     }
   } catch (error) {
     console.error("Error al abrir galería:", error);

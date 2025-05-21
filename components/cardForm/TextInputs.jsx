@@ -31,11 +31,10 @@ export default function TextInputs({ value, onChange }) {
 
             <Text style={{ marginRight: 180, marginBottom: 10, color: 'gray' }}>Descripcion:</Text>
             <TextInput
-                placeholderTextColor={"gray"}
                 scrollEnabled={true}
                 multiline={true}
                 maxLength={150}
-                style={{ borderWidth: 1, borderColor: '#969191', padding: 10, width: '100%', color: 'gray', borderRadius: 8 }}
+                style={{ borderWidth: 1, borderColor: '#969191', backgroundColor: '#1F4068', padding: 10, width: '100%', color: 'white', borderRadius: 8 }}
                 value={value.descripcion}
                 onChangeText={(text) => onChange({ ...value, descripcion: text })}
 
@@ -53,7 +52,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         width: '100%',
         borderColor: '#969191',
-        color: 'gray',
+        backgroundColor: '#1F4068',
+        color: 'white',
         borderRadius: 8,
         marginTop: 10,
         fontSize: 13,

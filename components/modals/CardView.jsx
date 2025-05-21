@@ -1,27 +1,61 @@
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native'
 import { useRoute } from '@react-navigation/native';
-import PlaneImg from '../../assets/images/mock.jpeg'
 import ZoomableImage from '../ZoomableImage'
 import colors from '../../assets/const/colors';
 import BackButton from '../../components/BackButton'
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import ConfirmModal from './ConfirModal';
+
+import { doc, deleteDoc } from 'firebase/firestore';
+import { db } from '../../credentials'
+import { showErrorToast, showSuccessToast } from '../../utils/toast';
 
 
 export default function CardView() {
+
+  const navigation = useNavigation();
+
   const route = useRoute();
+  const [show, setShow] = useState(false);
   const { item } = route.params;
   const formattedDate = new Date(item.fecha).toISOString().slice(0, 10);
 
+
+  const handleUpdate = () => {
+    navigation.navigate("CardModal", { uri: null, item: item })
+  }
+
+  const handleDelete = () => {
+    setShow(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteDoc(doc(db, "cards", item.id));
+      showSuccessToast("Carta eliminada", "Carta eliminada con exito")
+      setShow(false);
+      navigation.navigate("Gallery")
+    } catch (error) {
+      console.error("Error eliminando carta:", error);
+      showErrorToast("Error", "No se pudo eliminar la carta")
+    }
+    setShow(false);
+  };
+
   return (
     <>
-      <BackButton />
+      <View>
+        <BackButton />
+      </View>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, alignItems: 'center', paddingBottom: 20 }}
         showsVerticalScrollIndicator={false}
       >
         <LinearGradient
-          colors={['#4285F4', '#DB4437']} 
+          colors={['#4285F4', '#DB4437']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={styles.gradientBorder}
@@ -46,13 +80,20 @@ export default function CardView() {
 
               <View style={{ marginBlock: 10 }}>
                 <ActionButton label="Ver detalles del avion" onPress={null} backgroundColor='#4285F4' />
-                <ActionButton label="Actualizar carta" onPress={null} backgroundColor='#4285F4' />
-                <ActionButton label="Eliminar carta" onPress={null} backgroundColor='#DB4437' />
+                <ActionButton label="Actualizar carta" onPress={handleUpdate} backgroundColor='#4285F4' />
+                <ActionButton label="Eliminar carta" onPress={handleDelete} backgroundColor='#DB4437' />
               </View>
             </Animated.View>
+
           </View>
         </LinearGradient>
       </ScrollView>
+
+      <ConfirmModal
+        isVisible={show}
+        onCancel={() => setShow(false)}
+        onConfirm={handleConfirmDelete}
+      />
     </>
   );
 }
@@ -77,6 +118,8 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     marginTop: 80,
     marginHorizontal: 20,
+    width: '90%',
+    maxWidth: 400,
     shadowColor: '#4285F4',
     shadowOffset: {
       width: 0,

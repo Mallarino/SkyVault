@@ -24,11 +24,13 @@ export default function FechaSelector({ value, onChange }) {
         style={{
           borderWidth: 1,
           borderColor: '#969191',
+          marginTop: 10,
+          backgroundColor: '#1F4068',
           padding: 10,
           borderRadius: 8,
         }}
       >
-        <Text style={{ color: 'gray' }}>{formatDate(value)}</Text>
+        <Text style={{ color: 'white' }}>{formatDate(value)}</Text>
       </Pressable>
 
       {showPicker && (

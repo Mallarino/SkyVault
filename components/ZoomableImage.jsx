@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import ImageViewing from 'react-native-image-viewing';
 
-export default function ZoomableImage({ uri, tag }) {
+export default function ZoomableImage({ uri }) {
     const [visible, setVisible] = useState(false);
 
     return (

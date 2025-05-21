@@ -9,6 +9,7 @@ export default function TypeSelection({ value, onChange }) {
             borderWidth: 1,
             borderColor: '#969191',
             borderRadius: 8,
+            backgroundColor: '#1F4068',
             marginTop: 4,
             width: 230,
           }}>
@@ -28,12 +29,12 @@ export default function TypeSelection({ value, onChange }) {
               value={value}
               style={{
                 inputAndroid: {
-                  color: "gray",
+                  color: "white",
                   fontSize: 13,
                   width: '100%'
                 },
                 placeholder: {
-                  color: 'gray',
+                  color: 'white',
                 },
               }}
             />
