@@ -20,10 +20,10 @@ export default function TypeSelection({ value, onChange }) {
               }}
               onValueChange={(value) => onChange(value)}
               items={[
-                { label: 'Militar', value: 'militar' },
-                { label: 'Comercial', value: 'comercial' },
-                { label: 'Carga', value: 'carga' },
-                { label: 'Privado', value: 'privado' },
+                { label: 'Militar', value: 'Militar' },
+                { label: 'Comercial', value: 'Comercial' },
+                { label: 'Carga', value: 'Carga' },
+                { label: 'Privado', value: 'Privado' },
               ]}
               value={value}
               style={{

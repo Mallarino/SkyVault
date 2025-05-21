@@ -32,7 +32,7 @@ export default function AppNavigator() {
                 <Stack.Screen name="User" component={UserScreen} />
                 <Stack.Screen name="Registration" component={RegistrationScreen} />
                 <Stack.Screen name="CardModal" component={CardModal} />
-                <Stack.Screen name="CardView" component={CardView} />
+                <Stack.Screen name="CardView" component={CardView} options={{ animation: 'fade', presentation: 'transparentModal' }} />
 
             </Stack.Navigator>
         </NavigationContainer>

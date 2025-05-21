@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import ImageViewing from 'react-native-image-viewing';
 
-export default function ZoomableImage({ uri }) {
+export default function ZoomableImage({ uri, tag }) {
     const [visible, setVisible] = useState(false);
 
     return (
@@ -12,6 +12,7 @@ export default function ZoomableImage({ uri }) {
                     source={{ uri }}
                     style={{
                         resizeMode: 'contain',
+                        marginTop: 10,
                         borderRadius: 20,
                         maxWidth: 200,
                         maxHeight: 200,

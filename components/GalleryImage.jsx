@@ -5,15 +5,18 @@ import colors from '../assets/const/colors';
 const screenWidth = Dimensions.get('window').width;
 const imageSize = (screenWidth - 140) / 2;
 
-export const GalleryImage = ({ Imageuri, ImageModel }) => {
+export const GalleryImage = ({ item }) => {
+
+    console.log(`GalleryImage: ${item.id}`);
+    
     return (
         <View style={styles.container}>
             <Image
-                source={{ uri: Imageuri }}
+                source={{ uri: item.imagenPath }}
                 style={[styles.image, { width: imageSize }]}
                 resizeMode="contain"
             />
-            <Text style={styles.text} numberOfLines={1} ellipsizeMode='tail'>{ImageModel}</Text>
+            <Text style={styles.text} numberOfLines={1} ellipsizeMode='tail'>{item.modelo}</Text>
         </View>
     )
 }

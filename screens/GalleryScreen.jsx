@@ -3,6 +3,8 @@ import { GalleryImage } from '../components/GalleryImage';
 import BottomTabs from '../components/BottomTabs';
 import { useNavigation } from '@react-navigation/native';
 import colors from '../assets/const/colors';
+import LottieView from 'lottie-react-native';
+
 
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
@@ -38,27 +40,39 @@ export default function GalleryScreen() {
 
 
     const handlePress = (item) => {
-        navigation.navigate("CardView", { item: item  })
+        navigation.navigate("CardView", { item: item })
     }
 
 
     return (
         <>
             <View style={styles.container}>
-                {cards.length > 0 ? <FlatList
-                    data={cards}
-                    numColumns={2}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity
-                            onPress={() => {
-                                handlePress(item)
-                            }}
-                        >
-                            <GalleryImage Imageuri={item.imagenPath} ImageModel={item.modelo} />
-                        </TouchableOpacity>
-                    )}
-                /> : <Text style={styles.text}>Parece que aun no tienes nada en tu galeria</Text>}
+                {loading ? (
+                    <LottieView
+                        source={require('../assets/images/LoadAnimation.json')}
+                        autoPlay
+                        loop
+                        style={{ width: 150, height: 150 }}
+                    />
+                ) : cards.length > 0 ? (
+                    <FlatList
+                        data={cards}
+                        numColumns={2}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    handlePress(item);
+                                    console.log(`GalleryScreen: ${item.id}`);
+                                }}
+                            >
+                                <GalleryImage item={item} />
+                            </TouchableOpacity>
+                        )}
+                    />
+                ) : (
+                    <Text style={styles.text}>Parece que aun no tienes nada en tu galeria</Text>
+                )}
 
                 <BottomTabs />
             </View>

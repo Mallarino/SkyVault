@@ -11,7 +11,7 @@ import { collection, addDoc } from "firebase/firestore";
 import * as FileSystem from "expo-file-system";
 import { showErrorToast, showSuccessToast } from '../../utils/toast';
 import { db } from '../../credentials';
-import ZoomableImage from '../ZoomableImage';
+import LottieView from 'lottie-react-native';
 
 
 export default function CardModal({ route }) {
@@ -21,6 +21,7 @@ export default function CardModal({ route }) {
   const { imageUri } = route.params || {};
 
 
+  const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState(null);
   const [fecha, setFecha] = useState(new Date());
   const [inputs, setInputs] = useState({
@@ -57,11 +58,12 @@ export default function CardModal({ route }) {
       });
 
       showSuccessToast("Carta creada exitosamente", "¡Otra más para la colección!");
-      navigation.navigate("Gallery");
-
+      setLoading(false)
     } catch (error) {
       console.error(error);
       showErrorToast("Ups...", "Hubo un error al crear la carta");
+    } finally {
+      navigation.navigate("Gallery");
     }
   };
 
