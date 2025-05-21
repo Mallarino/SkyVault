@@ -63,7 +63,6 @@ export default function GalleryScreen() {
                             <TouchableOpacity
                                 onPress={() => {
                                     handlePress(item);
-                                    console.log(`GalleryScreen: ${item.id}`);
                                 }}
                             >
                                 <GalleryImage item={item} />

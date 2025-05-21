@@ -14,7 +14,6 @@ export default function UserScreen() {
 
   return (
     <>
-      <BackButton isLogued={true} />
       <View style={styles.container}>
 
         <View style={styles.container}>

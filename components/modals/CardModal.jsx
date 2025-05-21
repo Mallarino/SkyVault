@@ -11,7 +11,6 @@ import { collection, addDoc } from "firebase/firestore";
 import * as FileSystem from "expo-file-system";
 import { showErrorToast, showSuccessToast } from '../../utils/toast';
 import { db } from '../../credentials';
-import LottieView from 'lottie-react-native';
 
 
 export default function CardModal({ route }) {
@@ -50,7 +49,7 @@ export default function CardModal({ route }) {
       await addDoc(collection(db, "cards"), {
         modelo: inputs.modelo || "Unknow",
         matricula: inputs.matricula || "Unknow",
-        descripcion: inputs.descripcion || "",
+        descripcion: inputs.descripcion || "Sin descripción",
         tipo: selectedType,
         fecha: fecha.toISOString(),
         imagenPath: localUri,

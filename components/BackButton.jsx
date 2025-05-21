@@ -8,11 +8,13 @@ export default function BackButton() {
 
   const navigation = useNavigation();
 
-  const { setActiveTab } = useTab();
+  const { activeTab, setActiveTab } = useTab();
 
   const handleBack = () => {
     setActiveTab("")
-    navigation.navigate("Gallery")
+    console.log(activeTab);
+    
+    navigation.goBack();
   }
 
   return (

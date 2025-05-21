@@ -1,10 +1,12 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
 import { useRoute } from '@react-navigation/native';
 import PlaneImg from '../../assets/images/mock.jpeg'
 import ZoomableImage from '../ZoomableImage'
 import colors from '../../assets/const/colors';
 import BackButton from '../../components/BackButton'
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 export default function CardView() {
   const route = useRoute();
@@ -14,31 +16,52 @@ export default function CardView() {
   return (
     <>
       <BackButton />
-      <View style={styles.card}>
-        <Animated.View entering={FadeInDown.duration(400).delay(500)} style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>{item.modelo}</Text>
-        </Animated.View>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, alignItems: 'center', paddingBottom: 20 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <LinearGradient
+          colors={['#4285F4', '#DB4437']} 
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.gradientBorder}
+        >
+          <View style={styles.card}>
 
-        <ZoomableImage uri={item.imagenPath} />
+            <Animated.View entering={FadeInDown.duration(400).delay(500)} style={styles.cardHeader}>
+              <Text style={styles.cardTitle}>{item.modelo}</Text>
+            </Animated.View>
 
-       <Animated.View entering={FadeInDown.duration(400).delay(500)}style={styles.cardBody}>
-          <InfoRow label="Tipo:" value={item.tipo} />
-          <InfoRow label="Fecha:" value={formattedDate} />
-          <InfoRow label="Matrícula:" value={item.matricula} />
+            <ZoomableImage uri={item.imagenPath} />
 
-          <TouchableOpacity>
-            <Text style={styles.button}>Ver Detalles del Avión</Text>
-          </TouchableOpacity>
+            <Animated.View entering={FadeInDown.duration(400).delay(500)} style={styles.cardBody}>
+              <InfoRow label="Tipo:" value={item.tipo} />
+              <InfoRow label="Fecha:" value={formattedDate} />
+              <InfoRow label="Matrícula:" value={item.matricula} />
 
-          <View style={styles.descriptionBox}>
-            <Text style={styles.labelText}>Descripción</Text>
-            <Text style={styles.text}>{item.descripcion}</Text>
+              <View style={styles.descriptionBox}>
+                <Text style={styles.labelText}>Descripción</Text>
+                <Text style={styles.text}>{item.descripcion}</Text>
+              </View>
+
+              <View style={{ marginBlock: 10 }}>
+                <ActionButton label="Ver detalles del avion" onPress={null} backgroundColor='#4285F4' />
+                <ActionButton label="Actualizar carta" onPress={null} backgroundColor='#4285F4' />
+                <ActionButton label="Eliminar carta" onPress={null} backgroundColor='#DB4437' />
+              </View>
+            </Animated.View>
           </View>
-        </Animated.View>
-      </View>
+        </LinearGradient>
+      </ScrollView>
     </>
   );
 }
+
+const ActionButton = ({ label, onPress, backgroundColor, textColor = 'white' }) => (
+  <TouchableOpacity onPress={onPress} style={[styles.actionButton, { backgroundColor }]}>
+    <Text style={[styles.actionButtonText, { color: textColor }]}>{label}</Text>
+  </TouchableOpacity>
+);
 
 const InfoRow = ({ label, value }) => (
   <View style={styles.infoRow}>
@@ -49,36 +72,46 @@ const InfoRow = ({ label, value }) => (
 
 
 const styles = StyleSheet.create({
-  card: {
+  gradientBorder: {
+    padding: 2,
+    borderRadius: 22,
     marginTop: 80,
     marginHorizontal: 20,
+    shadowColor: '#4285F4',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.9,
+    shadowRadius: 20,
+    elevation: 20, // para Android
+  },
+  card: {
     backgroundColor: '#1A1A2E',
     borderRadius: 20,
-    borderWidth: 2,
-    borderColor: '#FFD700', // Borde dorado
-    shadowColor: '#FFD700',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.6,
-    shadowRadius: 8,
-    elevation: 10,
     paddingBottom: 20,
+    flex: 1,
     alignItems: 'center',
   },
   cardHeader: {
     backgroundColor: '#16213E',
+    flexDirection: 'row',
     width: '100%',
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
+    alignItems: 'center',
     padding: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#FFD700',
+    borderBottomColor: '#4285F4',
   },
+
   cardTitle: {
-    color: '#FFD700',
+    color: 'white',
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     textTransform: 'uppercase',
+    flex: 1, // para que ocupe todo el espacio restante
   },
   cardBody: {
     width: '90%',
@@ -91,7 +124,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   labelText: {
-    color: '#B0BEC5',
+    color: 'white',
     fontSize: 12,
     marginBottom: 4,
   },
@@ -107,15 +140,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 12,
   },
-  button: {
+  actionButton: {
     marginTop: 12,
-    paddingVertical: 8,
-    backgroundColor: '#FFD700',
+    paddingVertical: 10,
     borderRadius: 10,
-    textAlign: 'center',
-    color: 'black',
+    alignItems: 'center',
+  },
+  actionButtonText: {
     fontWeight: 'bold',
-    overflow: 'hidden',
+    fontSize: 14,
   },
 });
 

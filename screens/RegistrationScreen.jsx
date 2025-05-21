@@ -10,7 +10,6 @@ export default function RegistrationScreen() {
 
   return (
     <>
-      <BackButton isLogued={true} />
       <View style={styles.container}>
 
         <Text style={styles.title}>Consultar Matricula</Text>

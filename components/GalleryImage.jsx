@@ -7,7 +7,6 @@ const imageSize = (screenWidth - 140) / 2;
 
 export const GalleryImage = ({ item }) => {
 
-    console.log(`GalleryImage: ${item.id}`);
     
     return (
         <View style={styles.container}>
