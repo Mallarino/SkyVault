@@ -3,7 +3,7 @@ import { useRoute } from '@react-navigation/native';
 import ZoomableImage from '../ZoomableImage'
 import colors from '../../assets/const/colors';
 import BackButton from '../../components/BackButton'
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
@@ -55,20 +55,20 @@ export default function CardView() {
         showsVerticalScrollIndicator={false}
       >
         <LinearGradient
-          colors={['#4285F4', '#DB4437']}
+          colors={['#BDB7EA', '#E6E6FA']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={styles.gradientBorder}
         >
           <View style={styles.card}>
 
-            <Animated.View entering={FadeInDown.duration(400).delay(500)} style={styles.cardHeader}>
+            <Animated.View entering={FadeInUp.duration(400).delay(500)} style={styles.cardHeader}>
               <Text style={styles.cardTitle}>{item.modelo}</Text>
             </Animated.View>
 
             <ZoomableImage uri={item.imagenPath} />
 
-            <Animated.View entering={FadeInDown.duration(400).delay(500)} style={styles.cardBody}>
+            <Animated.View entering={FadeInUp.duration(400).delay(500)} style={styles.cardBody}>
               <InfoRow label="Tipo:" value={item.tipo} />
               <InfoRow label="Fecha:" value={formattedDate} />
               <InfoRow label="Matrícula:" value={item.matricula} />
