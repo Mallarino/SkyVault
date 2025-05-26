@@ -23,11 +23,12 @@ export default function FechaSelector({ value, onChange }) {
         onPress={() => setShowPicker(true)}
         style={{
           borderWidth: 1,
-          borderColor: '#969191',
+          borderColor: '#BDB7EA',
           marginTop: 10,
-          backgroundColor: '#1F4068',
+          backgroundColor: '#1A1A2E',
           padding: 10,
           borderRadius: 8,
+          width: '60%'
         }}
       >
         <Text style={{ color: 'white' }}>{formatDate(value)}</Text>
