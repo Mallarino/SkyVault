@@ -1,5 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import planeImg from '../../assets/images/mock.jpeg'
@@ -16,7 +15,6 @@ import * as FileSystem from "expo-file-system";
 import { showErrorToast, showSuccessToast } from '../../utils/toast';
 import { db } from '../../credentials';
 import ZoomableImage from '../ZoomableImage';
-import { bool } from 'prop-types';
 
 
 export default function CardModal({ route }) {
@@ -25,6 +23,7 @@ export default function CardModal({ route }) {
 
   const { item, uri } = route.params || {};
 
+  //Si item es un objeto devolvemos true para user la funcion de editar
   const isEditMode = item && true;
 
 
@@ -51,7 +50,7 @@ export default function CardModal({ route }) {
       setImageUri(item.imagenPath);
     } else {
       setInputs({
-        modelo: "",
+        modelo:  "",
         matricula: "",
         descripcion: ""
       });
@@ -65,7 +64,7 @@ export default function CardModal({ route }) {
   const handleCreate = async () => {
 
     setLoading(true)
-
+    
     if (!uri) {
       showErrorToast("Error", "Debes seleccionar una imagen.");
       return;
@@ -82,10 +81,10 @@ export default function CardModal({ route }) {
       });
 
       await addDoc(collection(db, "cards"), {
-        modelo: inputs.modelo || "Desconocido",
-        matricula: inputs.matricula || "Desconocida",
+        modelo: inputs.modelo || "Unknow",
+        matricula: inputs.matricula || "Unknow",
         descripcion: inputs.descripcion || "Sin descripción",
-        tipo: selectedType || "Desconocido",
+        tipo: selectedType,
         fecha: fecha.toISOString(),
         imagenPath: localUri,
         createdAt: new Date()
@@ -137,15 +136,12 @@ export default function CardModal({ route }) {
 
 
   return (
-
-    <KeyboardAwareScrollView
-      contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }}
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1, alignItems: 'center', paddingBottom: 20 }}
       showsVerticalScrollIndicator={false}
-      extraScrollHeight={Platform.select({ ios: 0, android: 250 })}
-      enableOnAndroid={true}
     >
       <LinearGradient
-        colors={['#BDB7EA', '#E6E6FA']}
+        colors={['#4285F4', '#DB4437']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={styles.gradientBorder}
@@ -157,7 +153,6 @@ export default function CardModal({ route }) {
           <ZoomableImage uri={imageUri} />
 
           <View style={styles.gridContainer}>
-
             {loading &&
               <View style={styles.loadingOverlay}>
                 <LottieView
@@ -169,19 +164,21 @@ export default function CardModal({ route }) {
               </View>
             }
 
-            <TypeSelection value={selectedType} onChange={setSelectedType} />
-            <FechaSelector value={fecha} onChange={setFecha} />
+            <View style={styles.inputGroup}>
+              <TypeSelection value={selectedType} onChange={setSelectedType} />
+              <FechaSelector value={fecha} onChange={setFecha} />
+            </View>
+
+            <View style={styles.inputGroup} />
 
             <TextInputs value={inputs} onChange={setInputs} />
 
           </View>
 
           <View style={styles.containerButtons}>
-
-            <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate("Gallery")}>
               <Text style={styles.cancelButtonText}>Cancelar</Text>
             </TouchableOpacity>
-
             <TouchableOpacity
               style={styles.createButton}
               onPress={isEditMode ? handleUpdate : handleCreate}
@@ -190,12 +187,10 @@ export default function CardModal({ route }) {
                 {isEditMode ? "Actualizar" : "Crear"}
               </Text>
             </TouchableOpacity>
-
           </View>
-
         </View>
       </LinearGradient>
-    </KeyboardAwareScrollView>
+    </ScrollView>
 
 
   )
@@ -205,7 +200,7 @@ const styles = StyleSheet.create({
   gradientBorder: {
     padding: 2,
     borderRadius: 22,
-    marginTop: 40,
+    marginTop: 80,
     marginHorizontal: 20,
     shadowColor: '#4285F4',
     shadowOffset: { width: 0, height: 0 },
@@ -274,14 +269,13 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 10,
     borderColor: '#969191',
-    backgroundColor: '#9370DB',
+    backgroundColor: '#1F4068',
     width: '45%',
     alignItems: 'center',
     borderWidth: 1,
   },
   createButtonText: {
     color: colors.primary,
-    fontWeight: 'bold',
     fontSize: 16,
   },
   loadingOverlay: {

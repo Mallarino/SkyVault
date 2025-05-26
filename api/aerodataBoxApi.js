@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-import { API_HOST, API_KEY } from "@env"
+const API_HOST = 'aerodatabox.p.rapidapi.com';
+const API_KEY = 'e14cbcd792mshde89cc8f2fa422fp1c7aa3jsn49472d2c5942'; 
 
 const apiClient = axios.create({
   baseURL: `https://${API_HOST}`,

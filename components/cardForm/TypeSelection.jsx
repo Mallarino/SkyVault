@@ -7,11 +7,11 @@ export default function TypeSelection({ value, onChange }) {
       <Text style={{ color: 'gray' }}>Tipo:</Text>
           <View style={{
             borderWidth: 1,
-            borderColor: '#BDB7EA',
+            borderColor: '#969191',
             borderRadius: 8,
-            backgroundColor: '#1A1A2E',
+            backgroundColor: '#1F4068',
             marginTop: 4,
-            width: '60%'
+            width: 230,
           }}>
             <RNPickerSelect
               placeholder={{
@@ -25,7 +25,6 @@ export default function TypeSelection({ value, onChange }) {
                 { label: 'Comercial', value: 'Comercial' },
                 { label: 'Carga', value: 'Carga' },
                 { label: 'Privado', value: 'Privado' },
-                { label: 'Desconocido', value: 'Desconocido' },
               ]}
               value={value}
               style={{

@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { TabProvider } from './context/TabContext';
 import Toast from 'react-native-toast-message';
 
+
 export default function App() {
 
   return (
