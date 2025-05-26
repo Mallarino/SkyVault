@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import BottomTabs from '../components/BottomTabs';
 import DataView from '../components/planeData/DataView';
 import ZoomableImage from '../components/ZoomableImage'
+import { useRoute } from '@react-navigation/native';
 import { planePhotos } from '../data/photoResponse';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -15,6 +16,10 @@ import { showErrorToast } from '../utils/toast';
 
 
 export default function RegistrationScreen() {
+
+  const route = useRoute();
+
+  const { registrationOnCard } = route.params || {};
 
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
@@ -30,6 +35,13 @@ export default function RegistrationScreen() {
   });
 
   const [planePhoto, setPlanePhoto] = useState();
+
+  useEffect(() => {
+    if (registrationOnCard) {
+      setValue(registrationOnCard)
+      fetchPlaneData(registrationOnCard)
+    }
+  }, [])
 
   const fetchPlaneData = async (registration) => {
 
@@ -49,23 +61,25 @@ export default function RegistrationScreen() {
 
       setPlanePhoto(photo)
       setData({
-        modelo: dataResponse.modelCode,
-        operador: dataResponse.airlineName,
-        edad: dataResponse.ageYears,
+        modelo: dataResponse.modelCode || "Desconocido",
+        operador: dataResponse.airlineName || "N/A",
+        edad: dataResponse.ageYears || "Desconocido",
         estado: dataResponse.active == true ? "Activo" : "Inactivo",
-        numeroAsientos: dataResponse.numSeats,
-        primerVuelo: dataResponse.firstFlightDate
+        numeroAsientos: dataResponse.numSeats || "N/A",
+        primerVuelo: dataResponse.firstFlightDate || "Desconocido"
       })
+
+      setShowData(true)
 
     } catch (error) {
       console.error(error)
-      showErrorToast("Ups...", "Verifica la matricula")
+      showErrorToast("Ups...", "No encontramos esa matricula")
     } finally {
       setLoading(false)
-      setShowData(true)
     };
 
   }
+
 
 
   return (
@@ -109,11 +123,11 @@ export default function RegistrationScreen() {
               <ZoomableImage uri={planePhoto} />
               <DataView title={"Modelo"} data={data.modelo} />
               <DataView title={"Operador"} data={data.operador} />
-              <DataView title={"Edad"} data={data.edad} />
+              <DataView title={"Edad"} data={`${data.edad} años`} />
               <DataView title={"Estado"} data={data.estado} />
               <DataView title={"N° de asientos"} data={data.numeroAsientos} />
               <DataView title={"Primer vuelo"} data={data.primerVuelo} />
-            </> }
+            </>}
 
           </Animated.View>
 

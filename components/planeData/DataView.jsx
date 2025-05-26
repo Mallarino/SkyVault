@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import colors from '../../assets/const/colors';
@@ -17,7 +17,7 @@ export default function DataView({ title, data }) {
 
                 <View style={styles.dataContainer}>
                     <Text style={styles.data}>
-                        {data}
+                        {`${data} `}
                     </Text>
                 </View>
 

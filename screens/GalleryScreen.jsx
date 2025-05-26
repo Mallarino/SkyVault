@@ -81,10 +81,6 @@ export default function GalleryScreen() {
 
 }
 
-
-
-
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,

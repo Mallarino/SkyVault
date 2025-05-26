@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   activeButton: {
-    backgroundColor: '#00BFFF',
+    backgroundColor: '#BDB7EA',
     borderRadius: 20,
   },
   modalOverlay: {

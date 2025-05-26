@@ -1,22 +1,21 @@
-import { View, Text, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView } from 'react-native'
 
 
 export default function TextInputs({ value, onChange }) {
 
     return (
-        <>
-            <View style={styles.inputGroup}>
-                <Text style={styles.textColor}>Modelo:</Text>
+        <KeyboardAvoidingView behavior='height'>
+
+                <Text style={styles.text}>Modelo:</Text>
                 <TextInput
                     placeholderTextColor={"gray"}
                     style={styles.input}
                     value={value.modelo}
                     onChangeText={(text) => onChange({ ...value, modelo: text })}
                 />
-            </View>
 
-            <View style={styles.inputGroup}>
-                <Text style={styles.textColor}>Matricula:</Text>
+
+                <Text style={styles.text}>Matricula:</Text>
                 <TextInput
                     placeholderTextColor={"gray"}
                     autoCapitalize='characters'
@@ -26,41 +25,38 @@ export default function TextInputs({ value, onChange }) {
                         onChange({ ...value, matricula: text.toUpperCase() })
                     }
                 />
-            </View>
 
 
-            <Text style={{ marginRight: 180, marginBottom: 10, color: 'gray' }}>Descripcion:</Text>
+
+            <Text style={{ marginRight: 180, marginBottom: 10, marginTop: 10, color: 'gray' }}>Descripcion:</Text>
             <TextInput
                 scrollEnabled={true}
                 multiline={true}
                 maxLength={150}
-                style={{ borderWidth: 1, borderColor: '#969191', backgroundColor: '#1F4068', padding: 10, width: '100%', color: 'white', borderRadius: 8 }}
+                style={{ borderWidth: 1, borderColor: '#BDB7EA', backgroundColor: '#1A1A2E', padding: 10, width: '100%', color: 'white', borderRadius: 8 }}
                 value={value.descripcion}
                 onChangeText={(text) => onChange({ ...value, descripcion: text })}
 
             />
-        </>
+        </KeyboardAvoidingView>
     )
 }
 
 const styles = StyleSheet.create({
-    inputGroup: {
-        width: '48%',
-        marginBottom: 16,
-    },
     input: {
         borderWidth: 1,
-        width: '100%',
-        borderColor: '#969191',
-        backgroundColor: '#1F4068',
+        width: '60%',
+        borderColor: '#BDB7EA',
+        backgroundColor: '#1A1A2E',
         color: 'white',
         borderRadius: 8,
         marginTop: 10,
         fontSize: 13,
         height: 36,
     },
-    textColor : {
-        color: 'gray'
+    text: {
+        color: 'gray',
+        marginTop: 10,
     }
 
 });
