@@ -1,8 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
-import planeImg from '../../assets/images/mock.jpeg'
+import { useContext, useState } from 'react';
 import colors from '../../assets/const/colors'
 import FechaSelector from '../cardForm/FechaSelector';
 import TextInputs from '../cardForm/TextInputs';
@@ -16,10 +15,12 @@ import * as FileSystem from "expo-file-system";
 import { showErrorToast, showSuccessToast } from '../../utils/toast';
 import { db } from '../../credentials';
 import ZoomableImage from '../ZoomableImage';
-import { bool } from 'prop-types';
+import { useRefreshCard } from '../../context/CardContext';
 
 
 export default function CardModal({ route }) {
+
+  const { shouldRefresh, setShouldRefresh } = useRefreshCard();
 
   const navigation = useNavigation();
 
@@ -91,6 +92,8 @@ export default function CardModal({ route }) {
         createdAt: new Date()
       });
 
+
+      setShouldRefresh(true);
       showSuccessToast("Carta creada exitosamente", "¡Otra más para la colección!");
       setLoading(false)
     } catch (error) {
@@ -123,6 +126,7 @@ export default function CardModal({ route }) {
         updatedAt: new Date()
       });
 
+      setShouldRefresh(true);
       showSuccessToast("Carta actualizada exitosamente");
       setLoading(false)
     } catch (error) {
@@ -134,13 +138,12 @@ export default function CardModal({ route }) {
   };
 
 
-
-
   return (
 
     <KeyboardAwareScrollView
       contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }}
       showsVerticalScrollIndicator={false}
+      keyboardDismissMode='on-drag'
       extraScrollHeight={Platform.select({ ios: 0, android: 250 })}
       enableOnAndroid={true}
     >

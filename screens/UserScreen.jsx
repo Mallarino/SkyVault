@@ -14,20 +14,7 @@ export default function UserScreen() {
 
   return (
     <>
-      <View style={styles.container}>
-
-        <View style={styles.container}>
-
-          <Text style={styles.title}>Mallarino</Text>
-
-          <TouchableOpacity style={styles.secondaryButton}>
-            <Text style={styles.secondaryButtonText}>Cerrar Sesión</Text>
-          </TouchableOpacity>
-
-          <BottomTabs />
-        </View>
-
-      </View>
+      
     </>
 
   )
@@ -40,25 +27,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     paddingHorizontal: 20,
-  },
-  title: {
-    color: colors.primary,
-    fontSize: 25,
-    fontWeight: 'bold',
-    marginTop: 100,
-  },
-  secondaryButton: {
-    padding: 12,
-    borderRadius: 10,
-    borderColor: '#969191',
-    width: 200,
-    marginTop: 100,
-    alignItems: 'center',
-    borderWidth: 1,
-  },
-  secondaryButtonText: {
-    color: colors.primary,
-    fontSize: 16,
   },
 
 });

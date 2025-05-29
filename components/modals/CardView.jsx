@@ -5,22 +5,24 @@ import BackButton from '../../components/BackButton'
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import ConfirmModal from './ConfirModal';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../credentials'
 import { showErrorToast, showSuccessToast } from '../../utils/toast';
-import colors from '../../assets/const/colors';
 import { useTab } from '../../context/TabContext';
 import * as FileSystem from 'expo-file-system';
-
+import LottieView from 'lottie-react-native';
+import { CardContext, useRefreshCard } from '../../context/CardContext';
 
 export default function CardView() {
 
   const navigation = useNavigation();
   const route = useRoute();
   const { setActiveTab } = useTab();
+  const { setShouldRefresh } = useRefreshCard();
 
+  const [loading, setLoading] = useState(false)
   const [show, setShow] = useState(false);
   const { item } = route.params;
   const formattedDate = new Date(item.fecha).toISOString().slice(0, 10);
@@ -41,15 +43,17 @@ export default function CardView() {
 
   const handleConfirmDelete = async () => {
     try {
-
+      setShow(false);
+      setLoading(true)
       if (item?.imagenPath) {
         await FileSystem.deleteAsync(item.imagenPath, { idempotent: true });
         console.log("Imagen eliminada:", item.imageUri);
       }
 
       await deleteDoc(doc(db, "cards", item.id));
-      showSuccessToast("Carta eliminada", "Carta eliminada con exito")
-      setShow(false);
+      setShouldRefresh(true)
+      showSuccessToast("Carta eliminada", "Carta eliminada con exito");
+      setLoading(false);
       navigation.navigate("Gallery")
     } catch (error) {
       console.error("Error eliminando carta:", error);
@@ -74,37 +78,48 @@ export default function CardView() {
         >
           <View style={styles.card}>
 
+            {loading ? (<LottieView
+              source={require('../../assets/images/LoadAnimation.json')}
+              autoPlay
+              loop
+              style={{ width: 150, height: 150 }}
+            />) 
+            :
+             (<> 
             <Animated.View entering={FadeInUp.duration(400).delay(500)} style={styles.cardHeader}>
               <Text style={styles.cardTitle}>{item.modelo}</Text>
             </Animated.View>
 
-            <ZoomableImage uri={item.imagenPath} />
+              <ZoomableImage uri={item.imagenPath} />
 
-            <Animated.View entering={FadeInUp.duration(400).delay(500)} style={styles.cardBody}>
-              <InfoRow label="Tipo:" value={item.tipo} />
-              <InfoRow label="Fecha:" value={formattedDate} />
-              <InfoRow label="Matrícula:" value={item.matricula} />
+              <Animated.View entering={FadeInUp.duration(400).delay(500)} style={styles.cardBody}>
+                <InfoRow label="Tipo:" value={item.tipo} />
+                <InfoRow label="Fecha:" value={formattedDate} />
+                <InfoRow label="Matrícula:" value={item.matricula} />
 
-              <LinearGradient
-                colors={['#BDB7EA', '#E6E6FA']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.gradientDescription}
-              >
-                <View style={styles.descriptionBox}>
+                <LinearGradient
+                  colors={['#BDB7EA', '#E6E6FA']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.gradientDescription}
+                >
+                  <View style={styles.descriptionBox}>
 
-                  <Text style={styles.labelText}>Descripción</Text>
-                  <Text style={styles.text}>{item.descripcion}</Text>
+                    <Text style={styles.labelText}>Descripción</Text>
+                    <Text style={styles.text}>{item.descripcion}</Text>
 
+                  </View>
+                </LinearGradient>
+
+                <View style={{ marginBlock: 10 }}>
+                  <ActionButton label="Ver detalles del avion" onPress={handleMoreData} colors={['#BDB7EA', '#9370DB']} />
+                  <ActionButton label="Actualizar carta" onPress={handleUpdate} colors={['#BDB7EA', '#9370DB']} />
+                  <ActionButton label="Eliminar carta" onPress={handleDelete} colors={['#FF4500', '#B22222']} />
                 </View>
-              </LinearGradient>
+              </Animated.View> 
+              </>)}
 
-              <View style={{ marginBlock: 10 }}>
-                <ActionButton label="Ver detalles del avion" onPress={handleMoreData} colors={['#BDB7EA', '#9370DB']} />
-                <ActionButton label="Actualizar carta" onPress={handleUpdate} colors={['#BDB7EA', '#9370DB']} />
-                <ActionButton label="Eliminar carta" onPress={handleDelete} colors={['#FF4500', '#B22222']} />
-              </View>
-            </Animated.View>
+
 
           </View>
         </LinearGradient>

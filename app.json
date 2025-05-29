@@ -4,11 +4,11 @@
     "slug": "PlaneCards",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "",
+    "icon": "assets/images/SkyVault.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "",
+      "image": "assets/images/SkyVault.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "",
+        "foregroundImage": "assets/images/SkyVault.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,

@@ -19,7 +19,7 @@ export default function BottomTabs() {
 
   const handlePress = (navigateTo) => {
     setActiveTab(navigateTo);
-    navigation.replace(navigateTo);
+    navigation.navigate(navigateTo);
   };
 
   const handleCameraPress = async () => {
@@ -104,7 +104,7 @@ export default function BottomTabs() {
         {activeTab ?
           <TouchableOpacity
             onPress={() => {
-              navigation.replace("Gallery");
+              navigation.navigate('Gallery');
               setActiveTab("");
             }}
           >
@@ -120,12 +120,6 @@ export default function BottomTabs() {
           </TouchableOpacity>
         }
 
-
-        <TouchableOpacity onPress={() => handlePress("User")}>
-          <Animated.View style={[styles.iconButton, activeTab === "User" && styles.activeButton]}>
-            <Feather name="user" size={30} color="white" />
-          </Animated.View>
-        </TouchableOpacity>
       </View>
 
       <PhotoOptionModal
