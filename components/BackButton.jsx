@@ -12,7 +12,6 @@ export default function BackButton() {
 
   const handleBack = () => {
     setActiveTab("")
-    console.log(activeTab);
     
     navigation.goBack();
   }

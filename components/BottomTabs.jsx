@@ -42,7 +42,6 @@ export default function BottomTabs() {
       if (!result.canceled) {
         const uri = result.assets[0].uri;
         setImageUri(uri);
-        console.log("Foto tomada:", uri);
         navigation.navigate("CardModal", { item: uri });
       }
     } catch (error) {
@@ -71,7 +70,6 @@ export default function BottomTabs() {
     if (!result.canceled) {
       const uri = result.assets[0].uri;
       setImageUri(uri);
-      console.log("Imagen seleccionada:", uri);
 
       navigation.navigate("CardModal", { uri: uri, item: null });
     }

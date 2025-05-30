@@ -2,9 +2,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import WelcomeScreen from '../screens/WelcomeScreen';
 import GalleryScreen from '../screens/GalleryScreen';
-import UserScreen from '../screens/UserScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
 
 import CardModal from '../components/modals/CardModal';
@@ -27,9 +25,7 @@ export default function AppNavigator() {
                     animation: 'fade'
                 }}
             >
-                <Stack.Screen name="Welcome" component={WelcomeScreen} />
                 <Stack.Screen name="Gallery" component={GalleryScreen} />
-                <Stack.Screen name="User" component={UserScreen} />
                 <Stack.Screen name="Registration" component={RegistrationScreen} />
                 <Stack.Screen name="CardModal" component={CardModal} />
                 <Stack.Screen name="CardView" component={CardView} options={{ animation: 'fade', presentation: 'transparentModal' }} />

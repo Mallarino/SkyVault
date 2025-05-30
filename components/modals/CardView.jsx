@@ -51,7 +51,6 @@ export default function CardView() {
       setLoading(true)
       if (item?.imagenPath) {
         await FileSystem.deleteAsync(item.imagenPath, { idempotent: true });
-        console.log("Imagen eliminada:", item.imageUri);
       }
 
       await deleteDoc(doc(db, "cards", item.id));

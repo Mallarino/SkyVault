@@ -24,18 +24,6 @@ export default function GalleryScreen() {
     const [loading, setLoading] = useState(false);
     const [isConnected, setIsConnected] = useState(true);
 
-    console.log(isConnected);
-    
-
-    // //Verificar si hay internet
-    // useEffect(() => {
-    //     const init = async () => {
-    //         const isConnected = await isOnline();
-    //         setIsConnected(isConnected);
-    //     }
-    //     init();
-    // }, [])
-
     //Mostrar mensaje solo una vez
     useEffect(() => {
         if (!alreadyRun && !isConnected) {
@@ -78,7 +66,6 @@ export default function GalleryScreen() {
             const existingFiles = await FileSystem.readDirectoryAsync(dir);
             for (const file of existingFiles) {
                 await FileSystem.deleteAsync(dir + file);
-                console.log('carta eliminada');
 
             }
 
@@ -89,7 +76,6 @@ export default function GalleryScreen() {
                 });
             }
 
-            console.log("Cartas guardadas localmente");
         };
 
         syncLocalCards();
@@ -130,8 +116,7 @@ export default function GalleryScreen() {
             );
 
             setCards(cards);
-            console.log("Se cargaron las cartas del local");
-
+            
         } catch (error) {
             console.error('Error al cargar cartas del local: ' + error);
 
