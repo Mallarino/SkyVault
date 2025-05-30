@@ -1,16 +1,16 @@
 import { View, Text, Image, Dimensions, StyleSheet } from 'react-native'
 import colors from '../assets/const/colors';
+import imageNotFound from  '../assets/images/imageNotFound.jpg'
 
 const screenWidth = Dimensions.get('window').width;
 const imageSize = (screenWidth - 140) / 2;
 
 export const GalleryImage = ({ item }) => {
-
     
     return (
         <View style={styles.container}>
             <Image
-                source={{ uri: item.imagenPath }}
+                source={{  uri: item.imagenPath ||  imageNotFound}}
                 style={[styles.image, { width: imageSize }]}
                 resizeMode="contain"
             />
@@ -28,12 +28,20 @@ const styles = StyleSheet.create({
     },
 
     text: {
-        color: "#97979b"
+        color: "#97979b",
+        marginTop: 8,
+        fontSize: 14,
+        fontWeight: '600',
+        textAlign: 'center',
     },
 
     image: {
         height: 85,
         borderRadius: 15,
-        margin: 0
+        margin: 0,
+        shadowColor: '#97979b', // en iOS
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
     },
 });

@@ -5,14 +5,16 @@ import BottomTabs from '../components/BottomTabs';
 import DataView from '../components/planeData/DataView';
 import ZoomableImage from '../components/ZoomableImage'
 import { useRoute } from '@react-navigation/native';
-import { planePhotos } from '../data/photoResponse';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import LottieView from 'lottie-react-native';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { getAircraftByRegistration } from '../api/aerodataBoxApi';
 import { getPlanePhoto } from '../api/planeSpottersApi';
 import { showErrorToast } from '../utils/toast';
+import { isOnline } from '../utils/isOnline';
+import OfflineMessage from '../components/OfflineMessage';
 
 
 export default function RegistrationScreen() {
@@ -24,6 +26,7 @@ export default function RegistrationScreen() {
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [showData, setShowData] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
 
   const [data, setData] = useState({
     modelo: "",
@@ -41,7 +44,8 @@ export default function RegistrationScreen() {
       setValue(registrationOnCard)
       fetchPlaneData(registrationOnCard)
     }
-  }, [])
+
+  }, []);
 
   const fetchPlaneData = async (registration) => {
 
@@ -90,6 +94,8 @@ export default function RegistrationScreen() {
       >
         <View style={styles.container}>
 
+          <OfflineMessage wifiStatus={setIsConnected}/>
+
           <Text style={styles.title}>Consultar Matricula</Text>
           <Text style={styles.subtitle}>Escribe la matricula de tu aeronave y mira mas detalles acerca de ella.</Text>
 
@@ -98,6 +104,7 @@ export default function RegistrationScreen() {
               placeholder="ej: N959AV"
               placeholderTextColor={"gray"}
               autoCapitalize='characters'
+              readOnly={!isConnected}
               maxLength={15}
               autoCorrect={false}
               style={styles.input}
@@ -105,8 +112,8 @@ export default function RegistrationScreen() {
               onChangeText={(text) => setValue(text.toUpperCase())}
             />
 
-            <TouchableOpacity onPress={() => fetchPlaneData(value)}>
-              <FontAwesome name="search" size={24} color="gray" />
+            <TouchableOpacity disabled={!isConnected} onPress={() => fetchPlaneData(value)}>
+              {isConnected ? <FontAwesome name="search" size={24} color="gray" /> : <MaterialCommunityIcons name="cancel" size={24} color="gray" />}
             </TouchableOpacity>
           </View>
 

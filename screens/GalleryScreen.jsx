@@ -4,27 +4,50 @@ import BottomTabs from '../components/BottomTabs';
 import { useNavigation } from '@react-navigation/native';
 import colors from '../assets/const/colors';
 import LottieView from 'lottie-react-native';
-import NetInfo from "@react-native-community/netinfo";
+import Entypo from '@expo/vector-icons/Entypo';
 import * as FileSystem from "expo-file-system";
 import { useContext, useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../credentials';
 import { CardContext, useRefreshCard } from '../context/CardContext';
+import { isOnline } from '../utils/isOnline';
+import { showInfoToast } from '../utils/toast';
+import OfflineMessage from '../components/OfflineMessage';
 
 
 export default function GalleryScreen() {
 
     const navigation = useNavigation();
- 
-    const { shouldRefresh, setShouldRefresh, cards, setCards } = useRefreshCard();
+
+    const { alreadyRun, setAlreadyRun, shouldRefresh, setShouldRefresh, cards, setCards } = useRefreshCard();
 
     const [loading, setLoading] = useState(false);
-    const [showOffline, setShowOffline] = useState(false);
+    const [isConnected, setIsConnected] = useState(true);
 
+    console.log(isConnected);
+    
+
+    // //Verificar si hay internet
+    // useEffect(() => {
+    //     const init = async () => {
+    //         const isConnected = await isOnline();
+    //         setIsConnected(isConnected);
+    //     }
+    //     init();
+    // }, [])
+
+    //Mostrar mensaje solo una vez
+    useEffect(() => {
+        if (!alreadyRun && !isConnected) {
+            showInfoToast("Estas en modo sin internet", "Muchas funciones estarán deshabilitadas");
+            setAlreadyRun(true)
+        }
+    }, [isConnected])
+
+    //Usamos shouldRefresh para no hacer llamados innecesarios a la Api
+    //Verificamos si hay internet para llamar una u otra
     useEffect(() => {
         const init = async () => {
-            const netState = await NetInfo.fetch();
-            const isConnected = netState.isConnected;
 
             if (isConnected && shouldRefresh) {
                 await fetchCards();
@@ -33,21 +56,21 @@ export default function GalleryScreen() {
 
             if (!isConnected && shouldRefresh) {
                 loadLocalCards();
-                setShouldRefresh(false)    
+                setShouldRefresh(false);
             }
-            
+
         };
 
         init();
     }, [shouldRefresh]);
 
-    //Hacer 'backup'
 
+    //Hacer 'backup' cada vez que se refresquen las cartas
     useEffect(() => {
         const syncLocalCards = async () => {
             if (cards.length === 0) return;
             if (!shouldRefresh) return;
-                
+
 
             const dir = FileSystem.documentDirectory + 'cards/';
             await FileSystem.makeDirectoryAsync(dir, { intermediates: true });
@@ -72,6 +95,8 @@ export default function GalleryScreen() {
         syncLocalCards();
     }, [shouldRefresh]);
 
+
+    //Llmar carta desde firebase
     const fetchCards = async () => {
         try {
             setLoading(true)
@@ -88,6 +113,7 @@ export default function GalleryScreen() {
         }
     };
 
+    //Llamar cartas desde el Local
     const loadLocalCards = async () => {
         try {
             setLoading(true)
@@ -105,12 +131,11 @@ export default function GalleryScreen() {
 
             setCards(cards);
             console.log("Se cargaron las cartas del local");
-            
+
         } catch (error) {
             console.error('Error al cargar cartas del local: ' + error);
 
         } finally {
-            setShowOffline(true)
             setLoading(false);
         }
 
@@ -125,7 +150,9 @@ export default function GalleryScreen() {
     return (
         <>
             <View style={styles.container}>
-                {showOffline && <Text style={{ color: 'white' }}>Estas en modo offline</Text>}
+
+                <OfflineMessage wifiStatus={setIsConnected}/>
+
                 {loading ? (
                     <LottieView
                         source={require('../assets/images/LoadAnimation.json')}
@@ -140,6 +167,7 @@ export default function GalleryScreen() {
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => (
                             <TouchableOpacity
+                                activeOpacity={0.8}
                                 onPress={() => {
                                     handlePress(item);
                                 }}

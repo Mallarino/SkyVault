@@ -26,7 +26,7 @@ export default function BackButton() {
 
 const styles = StyleSheet.create({
   backButton: {
-    top: 30,
+    top:10,
     left: 20,
     zIndex: 10,
   }

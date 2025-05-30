@@ -28,7 +28,7 @@ export const showInfoToast = (title, message) => {
     text1: title,
     text2: message,
     position: 'top',
-    visibilityTime: 3000,
+    visibilityTime: 6000,
     autoHide: true,
   });
 };
