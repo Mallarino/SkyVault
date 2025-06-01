@@ -1,6 +1,9 @@
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-import { API_HOST, API_KEY } from "@env"
+
+const { API_HOST, API_KEY } = Constants.expoConfig.extra;
+
 
 const apiClient = axios.create({
   baseURL: `https://${API_HOST}`,

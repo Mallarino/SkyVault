@@ -14,6 +14,9 @@ import { isOnline } from '../utils/isOnline';
 import { showInfoToast } from '../utils/toast';
 import OfflineMessage from '../components/OfflineMessage';
 
+import Constants from 'expo-constants';
+const { API_HOST, API_KEY } = Constants.expoConfig.extra;
+
 
 export default function GalleryScreen() {
 
@@ -23,6 +26,11 @@ export default function GalleryScreen() {
 
     const [loading, setLoading] = useState(false);
     const [isConnected, setIsConnected] = useState(true);
+
+    useEffect(() => {
+        console.log("API_HOST:", API_HOST);
+        console.log("API_KEY:", API_KEY);
+    }, [])
 
     //Mostrar mensaje solo una vez
     useEffect(() => {
@@ -116,7 +124,7 @@ export default function GalleryScreen() {
             );
 
             setCards(cards);
-            
+
         } catch (error) {
             console.error('Error al cargar cartas del local: ' + error);
 
@@ -136,7 +144,7 @@ export default function GalleryScreen() {
         <>
             <View style={styles.container}>
 
-                <OfflineMessage wifiStatus={setIsConnected}/>
+                <OfflineMessage wifiStatus={setIsConnected} />
 
                 {loading ? (
                     <LottieView

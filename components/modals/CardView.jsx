@@ -12,11 +12,8 @@ import { db } from '../../credentials'
 import { showErrorToast, showSuccessToast } from '../../utils/toast';
 import { useTab } from '../../context/TabContext';
 import * as FileSystem from 'expo-file-system';
-import Entypo from '@expo/vector-icons/Entypo';
 import LottieView from 'lottie-react-native';
-import { CardContext, useRefreshCard } from '../../context/CardContext';
-import colors from '../../assets/const/colors';
-import { isOnline } from '../../utils/isOnline';
+import { CardContext, useRefreshCard } from '../../context/CardContext';;
 import OfflineMessage from '../OfflineMessage';
 
 export default function CardView() {
