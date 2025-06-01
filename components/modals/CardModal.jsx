@@ -20,7 +20,7 @@ import { useRefreshCard } from '../../context/CardContext';
 
 export default function CardModal({ route }) {
 
-  const { shouldRefresh, setShouldRefresh } = useRefreshCard();
+  const { setShouldRefresh } = useRefreshCard();
 
   const navigation = useNavigation();
 

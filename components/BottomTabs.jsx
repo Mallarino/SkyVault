@@ -8,7 +8,7 @@ import colors from '../assets/const/colors';
 import PhotoOptionModal from './modals/PhotoOptionModal';
 import * as ImagePicker from 'expo-image-picker';
 
-export default function BottomTabs() {
+export default function BottomTabs({ wifiStatus }) {
   const navigation = useNavigation();
   const { activeTab, setActiveTab } = useTab();
   const [modalVisible, setModalVisible] = useState(false);
@@ -16,12 +16,12 @@ export default function BottomTabs() {
 
   const slideAnim = useRef(new Animated.Value(100)).current;
 
-
   const handlePress = (navigateTo) => {
     setActiveTab(navigateTo);
     navigation.navigate(navigateTo);
   };
 
+  //Mandar foto tomada en camara a "CardModal" 
   const handleCameraPress = async () => {
     setModalVisible(false);
 
@@ -51,6 +51,7 @@ export default function BottomTabs() {
 
   };
 
+  //Mandar foto seleccionada en galeria a "CardModal"
   const handleGalleryPress = async () => {
   setModalVisible(false);
 
@@ -77,8 +78,6 @@ export default function BottomTabs() {
     console.error("Error al abrir galería:", error);
   }
 };
-
-
 
 
   useEffect(() => {
@@ -111,9 +110,12 @@ export default function BottomTabs() {
             </Animated.View>
           </TouchableOpacity>
           :
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <TouchableOpacity
+          disabled={!wifiStatus} 
+          onPress={() => setModalVisible(true)}
+          >
             <Animated.View style={[styles.iconButton]}>
-              <Entypo name="circle-with-plus" size={30} color="white" />
+              <Entypo name="circle-with-plus" size={30} color={ wifiStatus ? "white" : "gray"} />
             </Animated.View>
           </TouchableOpacity>
         }
