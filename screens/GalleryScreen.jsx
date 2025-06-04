@@ -23,62 +23,35 @@ export default function GalleryScreen() {
     const [loading, setLoading] = useState(false);
     const [isConnected, setIsConnected] = useState(true);
 
-    //Mostrar mensaje solo una vez
-    useEffect(() => {
-        if (!alreadyRun && !isConnected) {
-            showInfoToast("Estas en modo sin internet", "Muchas funciones estarán deshabilitadas");
-            setAlreadyRun(true)
-        }
-    }, [isConnected])
-
     //Usamos shouldRefresh para no hacer llamados innecesarios a la Api
-    //Verificamos si hay internet para llamar una u otra
+    //Verificamos si hay internet para llamar una u otra funcion
+    //Realizamos un 'backup' de las cartas cada vez que se deba refrescar
+    //Mostramos el mensaje de Offline una sola vez
     useEffect(() => {
         const init = async () => {
+            const isConnected = await isOnline();
+            setIsConnected(isConnected);
 
             if (isConnected && shouldRefresh) {
-                await fetchCards();
+                const cardsFromFirebase = await fetchCards();
+                await syncLocalCards(cardsFromFirebase);
                 setShouldRefresh(false)
             }
-
+            
             if (!isConnected && shouldRefresh) {
                 loadLocalCards();
                 setShouldRefresh(false);
             }
 
-        };
+            if (!alreadyRun && !isConnected) {
+                showInfoToast("Estas en modo sin internet", "Muchas funciones estarán deshabilitadas");
+                setAlreadyRun(true)
+            }
+
+        }
 
         init();
-    }, [shouldRefresh]);
-
-
-    //Hacer 'backup' cada vez que se refresquen las cartas
-    useEffect(() => {
-        const syncLocalCards = async () => {
-            if (cards.length === 0) return;
-            if (!shouldRefresh) return;
-
-
-            const dir = FileSystem.documentDirectory + 'cards/';
-            await FileSystem.makeDirectoryAsync(dir, { intermediates: true });
-
-            const existingFiles = await FileSystem.readDirectoryAsync(dir);
-            for (const file of existingFiles) {
-                await FileSystem.deleteAsync(dir + file);
-
-            }
-
-            for (const card of cards) {
-                const filePath = dir + `${card.id || Date.now()}.json`;
-                await FileSystem.writeAsStringAsync(filePath, JSON.stringify(card), {
-                    encoding: FileSystem.EncodingType.UTF8,
-                });
-            }
-
-        };
-
-        syncLocalCards();
-    }, [shouldRefresh]);
+    }, []);
 
 
     //Llmar carta desde firebase
@@ -86,24 +59,51 @@ export default function GalleryScreen() {
         try {
             setLoading(true)
             const querySnapshot = await getDocs(collection(db, "cards"));
-            const fetchedCards = querySnapshot.docs.map(doc => ({
+            const cardsOnFirebase = querySnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data(),
             }));
-            setCards(fetchedCards);
+            setCards(cardsOnFirebase);
+            return cardsOnFirebase;
         } catch (error) {
             console.error("Error fetching cards:", error);
+            return []
         } finally {
             setLoading(false);
         }
+    };
+
+    //Hacer 'backup' cada vez que se refresquen las cartas
+    const syncLocalCards = async (cardsToSync) => {
+
+        if (!cardsToSync || cardsToSync.length === 0) return;
+
+        const dir = FileSystem.documentDirectory + 'cards/';
+        await FileSystem.makeDirectoryAsync(dir, { intermediates: true });
+
+        const existingFiles = await FileSystem.readDirectoryAsync(dir);
+
+        for (const file of existingFiles) {
+            await FileSystem.deleteAsync(dir + file);
+        }
+
+        for (const card of cardsToSync) {
+            const filePath = dir + `${card.id || Date.now()}.json`;
+            await FileSystem.writeAsStringAsync(filePath, JSON.stringify(card), {
+                encoding: FileSystem.EncodingType.UTF8,
+            });
+        }
+
     };
 
     //Llamar cartas desde el Local
     const loadLocalCards = async () => {
         try {
             setLoading(true)
+
             const dir = FileSystem.documentDirectory + 'cards/';
             const exists = await FileSystem.getInfoAsync(dir);
+
             if (!exists.exists) return [];
 
             const files = await FileSystem.readDirectoryAsync(dir);
@@ -135,7 +135,7 @@ export default function GalleryScreen() {
         <>
             <View style={styles.container}>
 
-                <OfflineMessage wifiStatus={setIsConnected} />
+                <OfflineMessage wifiStatus={null} />
 
                 {loading ? (
                     <LottieView
@@ -164,7 +164,7 @@ export default function GalleryScreen() {
                     <Text style={styles.text}>Parece que aun no tienes nada en tu galeria</Text>
                 )}
 
-                <BottomTabs wifiStatus={isConnected}/>
+                <BottomTabs wifiStatus={isConnected} />
             </View>
 
         </>
