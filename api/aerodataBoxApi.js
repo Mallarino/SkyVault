@@ -17,6 +17,7 @@ const apiClient = axios.create({
 export const getAircraftByRegistration = async (registration) => {
   try {
     const response = await apiClient.get(`/aircrafts/reg/${registration}`);
+    
     return response.data;
   } catch (error) {
     console.error('Error al obtener datos del avión:', error.message);

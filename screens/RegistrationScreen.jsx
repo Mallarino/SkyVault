@@ -61,6 +61,8 @@ export default function RegistrationScreen() {
       const photoResponse = await getPlanePhoto(registration)
       const dataResponse = await getAircraftByRegistration(registration)
 
+      console.log(dataResponse);
+      
       const photo = photoResponse.photos[0].thumbnail_large.src
 
       setPlanePhoto(photo)
